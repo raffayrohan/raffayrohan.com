@@ -548,6 +548,55 @@
 }
 header .max-w-7xl { min-width: 0; }
 </style>
+<style id="vip-pagemode">
+/* Page mode: on subpage routes, show only that page's own sections.
+   Hero + client marquee always stay visible; #contact closes every
+   subpage as the CTA, per the route mapping below. */
+/* /about -> #about + #results + #contact */
+html[data-page="about"] section#portfolio,
+html[data-page="about"] section#services,
+html[data-page="about"] section#blog { display: none !important; }
+/* /services -> #services + #results + #contact */
+html[data-page="services"] section#portfolio,
+html[data-page="services"] section#about,
+html[data-page="services"] section#blog { display: none !important; }
+/* /portfolio -> #portfolio + #results + #contact */
+html[data-page="portfolio"] section#services,
+html[data-page="portfolio"] section#about,
+html[data-page="portfolio"] section#blog { display: none !important; }
+/* /blog -> #blog + #contact */
+html[data-page="blog"] section#portfolio,
+html[data-page="blog"] section#results,
+html[data-page="blog"] section#services,
+html[data-page="blog"] section#about { display: none !important; }
+/* /contact -> #contact only */
+html[data-page="contact"] section#portfolio,
+html[data-page="contact"] section#results,
+html[data-page="contact"] section#services,
+html[data-page="contact"] section#about,
+html[data-page="contact"] section#blog { display: none !important; }
+</style>
+
+<style id="vip-mobilefix">
+/* Mobile fixes: header room for hamburger, sticky-bar clearance, table scroll */
+@media (max-width:1023.98px){ .brand-sub{display:none !important} }
+@media (max-width:640px){
+  header .max-w-7xl{gap:.5rem !important; padding-left:.75rem !important; padding-right:.75rem !important}
+  header a.group{gap:.5rem !important}
+  header a.group > div:first-child{width:2.25rem !important; height:2.25rem !important}
+  header #lang-toggle button{padding:.3rem .55rem !important}
+  header #mobile-nav-btn{padding:.55rem !important}
+}
+@media (max-width:560px){ header span:has(> span[data-i18n="statusAvailable"]){display:none !important} }
+@media (max-width:480px){ header [data-i18n="brandName"]{font-size:.875rem !important} }
+.fixed.bottom-0.z-40{padding-top:.5rem !important; padding-bottom:calc(.5rem + env(safe-area-inset-bottom)) !important; transition:transform .35s ease, opacity .35s ease}
+.fixed.bottom-0.z-40.bar-away{transform:translateY(110%); opacity:0; pointer-events:none}
+@media (max-width:767.98px){
+  main > section:first-of-type{padding-bottom:7rem !important}
+  #proof-panel-scorecard table{min-width:640px}
+}
+.open-project-modal{white-space:normal !important; line-height:1.35}
+</style>
 </head>
 <body class="bg-slate-50 dark:bg-navyDeep text-slate-900 dark:text-slate-100 min-h-screen flex flex-col selection:bg-skyAccent/25 pt-20 pb-16 md:pb-0">
 
@@ -576,7 +625,7 @@ header .max-w-7xl { min-width: 0; }
               <span class="hidden sm:inline" data-i18n="statusAvailable">Available</span>
             </span>
           </div>
-          <div class="text-[11px] leading-tight whitespace-nowrap text-slate-500 dark:text-slate-400" data-i18n="brandSub">Web Development • Local SEO &amp; Google Maps</div>
+          <div class="brand-sub text-[11px] leading-tight whitespace-nowrap text-slate-500 dark:text-slate-400" data-i18n="brandSub">Web Development • Local SEO &amp; Google Maps</div>
         </div>
       </a>
 
@@ -782,11 +831,13 @@ header .max-w-7xl { min-width: 0; }
                 <span class="px-2.5 py-0.5 rounded-full bg-emerald-500 text-white text-[10px] font-bold">+240% Key Events • #1 Map Sweep</span>
               </div>
               <a href="https://ruspa.ae" target="_blank" rel="noopener noreferrer" class="block relative min-h-[180px] p-6 bg-gradient-to-br from-blue-900 via-slate-900 to-emerald-950 flex flex-col justify-between">
-                <div class="space-y-2">
+                <img data-shot="ruspa" alt="RuSpa website homepage" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover" style="opacity:0;transition:opacity .6s" onerror="this.remove()">
+                <span class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/35 to-slate-900/10 pointer-events-none"></span>
+                <div class="relative space-y-2">
                   <div class="font-display font-extrabold text-xl text-white leading-snug">RuSpa — Al Barsha, Dubai</div>
                   <div class="text-xs text-slate-200 leading-relaxed">“Russian Spa Al Barsha” &amp; “Ukraine Massage Dubai” → #1 Across Grid</div>
                 </div>
-                <div class="pt-4 flex items-center justify-between text-xs text-sky-300 font-semibold">
+                <div class="relative pt-4 flex items-center justify-between text-xs text-sky-300 font-semibold">
                   <span>Visit Live Site ↗</span>
                   <span class="font-mono"><bdi class="bidi-ltr" dir="ltr">ruspa.ae</bdi></span>
                 </div>
@@ -816,11 +867,13 @@ header .max-w-7xl { min-width: 0; }
                 <span class="px-2.5 py-0.5 rounded-full bg-skyAccent text-white text-[10px] font-bold">20+ → #1 Al Quoz Map Breakthrough</span>
               </div>
               <a href="https://status67.com" target="_blank" rel="noopener noreferrer" class="block relative min-h-[180px] p-6 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 flex flex-col justify-between">
-                <div class="space-y-2">
+                <img data-shot="status67" alt="Status 67 website homepage" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover" style="opacity:0;transition:opacity .6s" onerror="this.remove()">
+                <span class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/35 to-slate-900/10 pointer-events-none"></span>
+                <div class="relative space-y-2">
                   <div class="font-display font-extrabold text-xl text-white leading-snug">Status 67 — Al Quoz Workshop Corridor</div>
                   <div class="text-xs text-slate-200 leading-relaxed">2 Commercial High-Ticket Keywords Moved From 20+ to #1</div>
                 </div>
-                <div class="pt-4 flex items-center justify-between text-xs text-sky-300 font-semibold">
+                <div class="relative pt-4 flex items-center justify-between text-xs text-sky-300 font-semibold">
                   <span>Visit Live Site ↗</span>
                   <span class="font-mono"><bdi class="bidi-ltr" dir="ltr">status67.com</bdi></span>
                 </div>
@@ -850,11 +903,13 @@ header .max-w-7xl { min-width: 0; }
                 <span class="px-2.5 py-0.5 rounded-full bg-indigo-600 text-white text-[10px] font-bold">Cited in Google AI Overview + 1,307 Sessions</span>
               </div>
               <a href="https://europeanspa.ae" target="_blank" rel="noopener noreferrer" class="block relative min-h-[180px] p-6 bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 flex flex-col justify-between">
-                <div class="space-y-2">
+                <img data-shot="europeanspa" alt="European Spa website homepage" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover" style="opacity:0;transition:opacity .6s" onerror="this.remove()">
+                <span class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/35 to-slate-900/10 pointer-events-none"></span>
+                <div class="relative space-y-2">
                   <div class="font-display font-extrabold text-xl text-white leading-snug">European Spa — Sofitel JBR Dubai</div>
                   <div class="text-xs text-slate-200 leading-relaxed">Credited Above All Organic Results in Google’s AI Overview</div>
                 </div>
-                <div class="pt-4 flex items-center justify-between text-xs text-sky-300 font-semibold">
+                <div class="relative pt-4 flex items-center justify-between text-xs text-sky-300 font-semibold">
                   <span>Visit Live Site ↗</span>
                   <span class="font-mono"><bdi class="bidi-ltr" dir="ltr">europeanspa.ae</bdi></span>
                 </div>
@@ -884,11 +939,13 @@ header .max-w-7xl { min-width: 0; }
                 <span class="px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-bold">Bilingual RTL/LTR • 4.6★ (46 GBP Reviews)</span>
               </div>
               <a href="https://alrayyan-panels.com" target="_blank" rel="noopener noreferrer" class="block relative min-h-[180px] p-6 bg-gradient-to-br from-emerald-950 via-slate-900 to-teal-950 flex flex-col justify-between">
-                <div class="space-y-2">
+                <img data-shot="alrayyan" alt="Al-Rayyan website homepage" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover" style="opacity:0;transition:opacity .6s" onerror="this.remove()">
+                <span class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/35 to-slate-900/10 pointer-events-none"></span>
+                <div class="relative space-y-2">
                   <div class="font-display font-extrabold text-xl text-white leading-snug">مؤسسة مظلات وسواتر الريان في جدة</div>
                   <div class="text-xs text-slate-200 leading-relaxed">8 Contracting Scopes • 9-Filter Gallery • 46 Verified Google Reviews</div>
                 </div>
-                <div class="pt-4 flex items-center justify-between text-xs text-sky-300 font-semibold">
+                <div class="relative pt-4 flex items-center justify-between text-xs text-sky-300 font-semibold">
                   <span>Visit Live Site ↗</span>
                   <span class="font-mono"><bdi class="bidi-ltr" dir="ltr">alrayyan-panels.com</bdi></span>
                 </div>
@@ -2263,6 +2320,7 @@ header .max-w-7xl { min-width: 0; }
       },
       {
         slug: 'bilingual-arabic-english-rtl-seo-architecture',
+        thumb: 'shot:alrayyan',
         category: 'Bilingual SEO',
         readTime: '6 min read',
         keywords: ['bilingual website seo', 'arabic rtl web design', 'saudi arabia seo'],
@@ -2343,7 +2401,8 @@ header .max-w-7xl { min-width: 0; }
               </div>
 
               <a href="${item.url}" ${isAnchor ? '' : 'target="_blank" rel="noopener noreferrer"'} class="block relative min-h-[180px] p-6 bg-gradient-to-br ${item.themeGrad} flex flex-col justify-between">
-                <div class="space-y-2">
+                ${['ruspa', 'status67', 'europeanspa', 'alrayyan'].includes(item.id) ? `<img data-shot="${item.id}" alt="${item.domain} website homepage" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover" style="opacity:0;transition:opacity .6s" onerror="this.remove()"><span class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/35 to-slate-900/10 pointer-events-none"></span>` : ''}
+                <div class="relative space-y-2">
                   <div class="font-display font-extrabold text-xl text-white leading-snug">
                     ${loc.previewTitle}
                   </div>
@@ -2351,7 +2410,7 @@ header .max-w-7xl { min-width: 0; }
                     ${loc.previewSub}
                   </div>
                 </div>
-                <div class="pt-4 flex items-center justify-between text-xs text-sky-300 font-semibold">
+                <div class="relative pt-4 flex items-center justify-between text-xs text-sky-300 font-semibold">
                   <span>${dict.visitLiveSiteLabel}</span>
                   <span class="font-mono"><bdi class="bidi-ltr" dir="ltr">${item.domain}</bdi></span>
                 </div>
@@ -2459,7 +2518,7 @@ header .max-w-7xl { min-width: 0; }
         return `
           <article style="animation-delay: ${delayMs}ms; --wave-delay: ${waveDelayMs}ms;" class="vip-card object-load-anim rounded-3xl bg-white dark:bg-navyCard border border-slate-200 dark:border-white/10 p-6 flex flex-col justify-between gap-4 shadow-sm">
             <div class="space-y-3">
-              ${post.thumb ? `<img src="${post.thumb}" alt="${post.category} guide — raffayrohan.com" loading="lazy" decoding="async" class="w-full h-40 object-cover rounded-2xl border border-slate-200 dark:border-white/10" />` : ''}
+              ${post.thumb ? (post.thumb.startsWith('shot:') ? `<img data-shot="${post.thumb.slice(5)}" alt="${post.category} guide — raffayrohan.com" loading="lazy" decoding="async" class="w-full h-40 object-cover rounded-2xl border border-slate-200 dark:border-white/10" style="opacity:0;transition:opacity .6s" onerror="this.remove()" />` : `<img src="${post.thumb}" alt="${post.category} guide — raffayrohan.com" loading="lazy" decoding="async" class="w-full h-40 object-cover rounded-2xl border border-slate-200 dark:border-white/10" />`) : ''}
               <div class="flex items-center justify-between text-xs">
                 <span class="px-3 py-1 rounded-full bg-royal/10 dark:bg-skyAccent/15 text-royal dark:text-skyAccent font-bold">${post.category}</span>
                 <span class="text-slate-400 font-mono">${post.readTime}</span>
@@ -2719,14 +2778,17 @@ header .max-w-7xl { min-width: 0; }
       setLanguage('en');
       wireCardSpotlights();
 
-      // Route landing: /about, /services, /portfolio, /blog and /contact are
-      // full-page copies of this homepage — scroll straight to the matching
-      // section on load so the route feels like its own page.
+      // Route landing + page mode: /about, /services, /portfolio, /blog and
+      // /contact are full-page copies of this homepage — tag <html> with
+      // data-page so the vip-pagemode CSS trims each route to its own
+      // sections, and scroll straight to the matching section on load.
       (function() {
-        if (window.location.hash) return;
         const routeMap = { '/about': 'about', '/services': 'services', '/portfolio': 'portfolio', '/blog': 'blog', '/contact': 'contact' };
         const routePath = window.location.pathname.replace(/\/+$/, '');
         const routeTargetId = routeMap[routePath];
+        // Page mode: tag subpages on <html> so CSS shows only that page's sections
+        if (routeTargetId) document.documentElement.dataset.page = routeTargetId;
+        if (window.location.hash) return;
         if (!routeTargetId) return;
         const routeTargetEl = document.getElementById(routeTargetId);
         if (routeTargetEl) setTimeout(function() { routeTargetEl.scrollIntoView(); }, 400);
@@ -2765,6 +2827,13 @@ header .max-w-7xl { min-width: 0; }
 
       const closeBtn = document.getElementById('clean-modal-close');
       if (closeBtn) closeBtn.addEventListener('click', closeCleanModal);
+
+      // Close the shared modal on backdrop click or Escape as well
+      const cleanModalEl = document.getElementById('clean-modal');
+      if (cleanModalEl) {
+        cleanModalEl.addEventListener('click', function(e) { if (e.target === cleanModalEl) closeCleanModal(); });
+      }
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeCleanModal(); });
 
       // View All 10 Services Modal
       const allServBtn = document.getElementById('btn-view-all-services');
@@ -3004,5 +3073,10 @@ header .max-w-7xl { min-width: 0; }
       });
     });
   </script>
+  <script defer src="/assets/shots.js"></script>
+<script>
+(function(){try{var bar=document.querySelector('.fixed.bottom-0.z-40');var c=document.getElementById('contact');if(!bar||!c||!('IntersectionObserver' in window))return;new IntersectionObserver(function(es){es.forEach(function(e){bar.classList.toggle('bar-away',e.isIntersecting)})},{rootMargin:'-10% 0px -10% 0px'}).observe(c)}catch(e){}})();
+</script>
+
 </body>
 </html>
