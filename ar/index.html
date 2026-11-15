@@ -359,6 +359,76 @@
         transition-duration: 0.01ms !important;
       }
     }
+
+    /* =================================================================== */
+    /* AUDIT FIXES + DESIGN UPGRADE — 2026-11-16 (presentation only)       */
+    /* =================================================================== */
+    /* A: header subtitle + nav links never wrap or clip */
+    header nav a { white-space: nowrap; }
+    /* C: card / about text is never height-clipped — full text always shows */
+    .vip-card p, #about p { max-height: none !important; -webkit-line-clamp: none !important; line-clamp: none !important; overflow: visible; }
+    #services-cards-grid, #blog-cards-grid, #portfolio-cards-grid { align-items: stretch; }
+    #services-cards-grid > *, #blog-cards-grid > *, #portfolio-cards-grid > * { height: 100%; }
+    /* F: keep page bottom clear of the sticky mobile action bar (~60px) */
+    @media (max-width: 767.98px) { body { padding-bottom: 84px; } }
+    /* H: contact Service select shows its full selected value */
+    #c-service { font-size: 13px; padding-left: 0.75rem; padding-right: 1.75rem; }
+    /* J: anchored / route scrolled sections sit below the fixed header */
+    section[id] { scroll-margin-top: 100px; }
+    /* L: proof mini-card badges stay on one line at a uniform size; cards equal height */
+    #proof-panel-mapgrids .vip-card { height: 100%; }
+    #proof-panel-mapgrids .vip-card span.font-mono { white-space: nowrap; font-size: 11px; letter-spacing: -0.01em; }
+    #proof-panel-mapgrids .vip-card .font-mono span { white-space: nowrap; }
+
+    /* --- Design upgrade: typography --- */
+    h2.font-display, h3.font-display { letter-spacing: -0.022em; }
+    div[data-i18n$="Eyebrow"] { letter-spacing: 0.14em; }
+    main > section:first-of-type h1 { font-size: clamp(2.15rem, 4.6vw + 1rem, 3.65rem); line-height: 1.07; }
+    /* --- Design upgrade: hero depth (soft glows + faint grid, content above) --- */
+    main > section:first-of-type::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(560px circle at 12% -5%, rgba(56, 189, 248, 0.14), transparent 60%),
+        radial-gradient(640px circle at 88% 0%, rgba(16, 185, 129, 0.12), transparent 60%),
+        linear-gradient(rgba(100, 116, 139, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(100, 116, 139, 0.05) 1px, transparent 1px);
+      background-size: auto, auto, 44px 44px, 44px 44px;
+    }
+    main > section:first-of-type > div { position: relative; z-index: 1; }
+    /* --- Design upgrade: glassy card sheen + soft depth --- */
+    .vip-card { background-image: linear-gradient(165deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 42%); box-shadow: 0 10px 30px -12px rgba(2, 6, 23, 0.18); }
+    /* --- Design upgrade: hover lift + border glow on cards --- */
+    #portfolio-cards-grid .vip-card, #services-cards-grid .vip-card, #blog-cards-grid .vip-card, #proof-panel-mapgrids .vip-card {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+    #portfolio-cards-grid .vip-card:hover, #services-cards-grid .vip-card:hover, #blog-cards-grid .vip-card:hover, #proof-panel-mapgrids .vip-card:hover {
+      transform: translateY(-6px); border-color: rgba(56, 189, 248, 0.6);
+      box-shadow: 0 22px 44px -14px rgba(14, 165, 233, 0.30);
+    }
+    /* --- Design upgrade: one consistent primary CTA feel --- */
+    [class*="from-royal"][class*="to-skyAccent"] {
+      box-shadow: 0 10px 24px -8px rgba(37, 99, 235, 0.45);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+    }
+    [class*="from-royal"][class*="to-skyAccent"]:hover {
+      transform: translateY(-2px); box-shadow: 0 16px 32px -8px rgba(37, 99, 235, 0.55);
+    }
+    /* --- Design upgrade: client-domain marquee --- */
+    .domain-marquee-wrap {
+      overflow: hidden; padding: 14px 0; border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    }
+    .domain-marquee { display: flex; width: max-content; animation: marqueeScroll 38s linear infinite; }
+    .domain-marquee-wrap:hover .domain-marquee { animation-play-state: paused; }
+    .marquee-group { display: flex; align-items: center; gap: 2.5rem; padding-right: 2.5rem; }
+    .marquee-group span { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; white-space: nowrap; color: #64748B; }
+    .marquee-group span.mq-dot { color: #0EA5E9; font-weight: 400; }
+    html.dark .marquee-group span { color: #94A3B8; }
+    @keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @media (prefers-reduced-motion: reduce) { .domain-marquee { animation: none; } }
+    /* --- Design upgrade: footer polish --- */
+    footer.bg-slate-900 { border-top: 1px solid rgba(56, 189, 248, 0.22); padding-top: 3.25rem; padding-bottom: 3.25rem; }
   </style>
 
   <!-- Comprehensive JSON-LD Structured Data Graph (Person, ProfessionalService, WebSite, ItemList, FAQPage) -->
@@ -481,7 +551,7 @@
   <!-- 100% FIXED STICKY VIP HEADER + ACCURATE BOTTOM SCROLL LOADING LINE    -->
   <!-- ===================================================================== -->
   <header class="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-white/92 dark:bg-navyDeep/92 border-b border-slate-200/80 dark:border-white/10 shadow-lg">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
       
       <!-- Brand Identity Pill -->
       <a href="#top" class="flex items-center gap-3 group focus:outline-none">
@@ -492,24 +562,24 @@
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <span class="font-display font-extrabold text-base sm:text-lg tracking-tight text-slate-900 dark:text-white" data-i18n="brandName">Raffay Rohan</span>
+            <span class="font-display font-extrabold text-base sm:text-lg tracking-tight whitespace-nowrap text-slate-900 dark:text-white" data-i18n="brandName">Raffay Rohan</span>
             <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[10px] font-medium text-emerald-700 dark:text-emerald-300">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
               <span class="hidden sm:inline" data-i18n="statusAvailable">Available</span>
             </span>
           </div>
-          <div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="brandSub">Web Development • Local SEO &amp; Google Maps</div>
+          <div class="text-[11px] leading-tight whitespace-nowrap text-slate-500 dark:text-slate-400" data-i18n="brandSub">Web Development • Local SEO &amp; Google Maps</div>
         </div>
       </a>
 
       <!-- Attractive Floating Capsule Navigation (Desktop) -->
       <nav aria-label="Primary Navigation" class="hidden lg:flex items-center gap-1 bg-slate-100/90 dark:bg-navyCard/90 border border-slate-200/80 dark:border-white/10 rounded-full px-2 py-1.5 shadow-inner text-xs font-semibold">
-        <a href="#results" class="px-3.5 py-1.5 rounded-full text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-white/10 hover:text-royal dark:hover:text-skyAccent transition-all" data-i18n="navResults">SEO Results</a>
-        <a href="#portfolio" class="px-3.5 py-1.5 rounded-full text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-white/10 hover:text-royal dark:hover:text-skyAccent transition-all" data-i18n="navPortfolio">Portfolio</a>
-        <a href="#services" class="px-3.5 py-1.5 rounded-full text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-white/10 hover:text-royal dark:hover:text-skyAccent transition-all" data-i18n="navServices">Services</a>
-        <a href="#about" class="px-3.5 py-1.5 rounded-full text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-white/10 hover:text-royal dark:hover:text-skyAccent transition-all" data-i18n="navAbout">About</a>
-        <a href="#blog" class="px-3.5 py-1.5 rounded-full text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-white/10 hover:text-royal dark:hover:text-skyAccent transition-all" data-i18n="navBlog">SEO Guides</a>
-        <a href="#contact" class="px-3.5 py-1.5 rounded-full text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-white/10 hover:text-royal dark:hover:text-skyAccent transition-all" data-i18n="navContact">Contact</a>
+        <a href="#results" class="px-3.5 py-1.5 rounded-full text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-white/10 hover:text-royal dark:hover:text-skyAccent transition-all whitespace-nowrap" data-i18n="navResults">SEO Results</a>
+        <a href="#portfolio" class="px-3.5 py-1.5 rounded-full text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-white/10 hover:text-royal dark:hover:text-skyAccent transition-all whitespace-nowrap" data-i18n="navPortfolio">Portfolio</a>
+        <a href="#services" class="px-3.5 py-1.5 rounded-full text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-white/10 hover:text-royal dark:hover:text-skyAccent transition-all whitespace-nowrap" data-i18n="navServices">Services</a>
+        <a href="#about" class="px-3.5 py-1.5 rounded-full text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-white/10 hover:text-royal dark:hover:text-skyAccent transition-all whitespace-nowrap" data-i18n="navAbout">About</a>
+        <a href="#blog" class="px-3.5 py-1.5 rounded-full text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-white/10 hover:text-royal dark:hover:text-skyAccent transition-all whitespace-nowrap" data-i18n="navBlog">SEO Guides</a>
+        <a href="#contact" class="px-3.5 py-1.5 rounded-full text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-white/10 hover:text-royal dark:hover:text-skyAccent transition-all whitespace-nowrap" data-i18n="navContact">Contact</a>
       </nav>
 
       <!-- Right Controls: EN | عربي (No Urdu) + Dark/Light Toggle + Primary CTA -->
@@ -526,7 +596,7 @@
         </button>
 
         <!-- Primary Header CTA -->
-        <a href="#contact" class="hidden sm:inline-flex items-center gap-2 bg-gradient-to-r from-royal to-skyAccent hover:opacity-95 text-white font-display font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-md shadow-royal/25 transition-all">
+        <a href="#contact" class="hidden sm:inline-flex items-center gap-2 bg-gradient-to-r from-royal to-skyAccent hover:opacity-95 text-white font-display font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-md shadow-royal/25 transition-all whitespace-nowrap">
           <span data-i18n="headerCta">Work With Me →</span>
         </a>
 
@@ -567,6 +637,7 @@
           
           <!-- Left: Warm, Direct, High-Impact Positioning -->
           <div class="lg:col-span-7 space-y-5 object-load-anim">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs font-semibold text-emerald-700 dark:text-emerald-300"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span data-i18n="directReachSub">Available for projects in UAE, Saudi Arabia, Pakistan, UK, USA &amp; worldwide.</span></div>
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-royal/15 border border-blue-200 dark:border-royal/30 text-xs font-semibold text-royal dark:text-skyAccent">
               <span class="w-2 h-2 rounded-full bg-emeraldAccent animate-pulse"></span>
               <span data-i18n="heroBadge">Website Development • Local SEO • Google Business Profile</span>
@@ -578,7 +649,7 @@
             </h1>
 
             <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-xl" data-i18n="heroSubtitle">
-              I build fast, high-converting websites and rank businesses at #1 on Google Maps, Local Search, and Google AI Overviews across Dubai, Saudi Arabia, Pakistan, and global markets.
+              I build fast websites for local businesses and get them found first — at the top of Google Maps, in local search, and inside Google AI Overviews. Most of my work is for clients in Dubai, Saudi Arabia and Pakistan, and I take on projects worldwide.
             </p>
 
             <!-- Action CTAs -->
@@ -607,7 +678,7 @@
               </div>
               <div style="--wave-delay: 1050ms;" class="vip-card p-3.5 rounded-2xl bg-white dark:bg-navyCard border border-slate-200/80 dark:border-white/10 shadow-sm">
                 <div class="font-display font-extrabold text-xl sm:text-2xl text-slate-900 dark:text-white">20+</div>
-                <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" data-i18n="heroStat4">Projects Delivered (4+ Yrs)</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" data-i18n="heroStat4">Projects Delivered (4+&nbsp;Yrs)</div>
               </div>
             </div>
           </div>
@@ -638,6 +709,33 @@
     <!-- ===================================================================== -->
     <!-- 02. FEATURED PORTFOLIO — 4 PROJECTS INITIAL + "LOAD MORE" BUTTON      -->
     <!-- ===================================================================== -->
+    <!-- Client domains strip — presentation of domains already listed on this page -->
+    <div class="domain-marquee-wrap" aria-hidden="true">
+      <div class="domain-marquee">
+      <div class="marquee-group">
+        <span>ruspa.ae</span><span class="mq-dot">•</span>
+        <span>europeanspa.ae</span><span class="mq-dot">•</span>
+        <span>kspa.ae</span><span class="mq-dot">•</span>
+        <span>palmspa.ae</span><span class="mq-dot">•</span>
+        <span>ukrainespa.ae</span><span class="mq-dot">•</span>
+        <span>status67.com</span><span class="mq-dot">•</span>
+        <span>elisspa.ae</span><span class="mq-dot">•</span>
+        <span>alrayyan-panels.com</span><span class="mq-dot">•</span>
+        <span>dribrarhussainent.com</span><span class="mq-dot">•</span>
+      </div>
+      <div class="marquee-group">
+        <span>ruspa.ae</span><span class="mq-dot">•</span>
+        <span>europeanspa.ae</span><span class="mq-dot">•</span>
+        <span>kspa.ae</span><span class="mq-dot">•</span>
+        <span>palmspa.ae</span><span class="mq-dot">•</span>
+        <span>ukrainespa.ae</span><span class="mq-dot">•</span>
+        <span>status67.com</span><span class="mq-dot">•</span>
+        <span>elisspa.ae</span><span class="mq-dot">•</span>
+        <span>alrayyan-panels.com</span><span class="mq-dot">•</span>
+        <span>dribrarhussainent.com</span><span class="mq-dot">•</span>
+      </div>
+      </div>
+    </div>
     <section id="portfolio" class="py-16 sm:py-20 border-b border-slate-200/80 dark:border-white/10">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
@@ -648,7 +746,7 @@
               Featured Client Portfolio
             </h2>
             <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300" data-i18n="portSubtitle">
-              Showing 4 featured client projects below — click "Load More Projects" to explore all 15 verified client websites and SEO campaigns.
+              Real client websites, built and ranked by me — four are shown first, and "Load More Projects" reveals all 15.
             </p>
           </div>
 
@@ -1152,7 +1250,7 @@
               How We Can Work Together
             </h2>
             <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300" data-i18n="servSubtitle">
-              Every service is backed by real live client proof and connected directly to measurable enquiries.
+              These are the services I personally deliver — and each one is tied to a real client result you can check right here on this page.
             </p>
           </div>
           <button type="button" id="btn-view-all-services" class="self-start md:self-auto px-5 py-2.5 rounded-xl bg-white dark:bg-navyCard hover:bg-royal hover:text-white border border-slate-200 dark:border-white/15 text-royal dark:text-skyAccent font-display text-xs font-bold shadow-sm transition-all" data-i18n="btnViewAllServices">
@@ -1180,7 +1278,7 @@
                 <img src="/assets/images/raffay_standing.jpg" width="800" height="800" loading="lazy" decoding="async" alt="Raffay Rohan — Founder & Independent SEO Consultant" class="w-full aspect-square h-auto object-cover object-center max-w-full block" />
                 <div class="px-4 py-3 bg-white/95 dark:bg-navyDeep/95 backdrop-blur border-t border-slate-100 dark:border-white/10 flex items-center justify-between text-xs">
                   <span class="font-display font-bold text-slate-900 dark:text-white" data-i18n="brandName">Raffay Rohan</span>
-                  <span class="font-mono text-emeraldAccent font-semibold">4+ Yrs • 20+ Projects</span>
+                  <span class="font-mono text-emeraldAccent font-semibold whitespace-nowrap">4+ Yrs • 20+ Projects</span>
                 </div>
               </div>
             </div>
@@ -1239,7 +1337,7 @@
     <!-- ===================================================================== -->
     <!-- 07. EFFORTLESS CONTACT & FREE AUDIT SECTION                           -->
     <!-- ===================================================================== -->
-    <section id="contact" class="py-16 sm:py-20 bg-white dark:bg-slate-900/70">
+    <section id="contact" class="pt-6 sm:pt-8 pb-16 sm:pb-20 bg-white dark:bg-slate-900/70">
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div style="--wave-delay: 150ms;" class="vip-card rounded-3xl bg-slate-50 dark:bg-navyCard p-6 sm:p-10 lg:p-12 border border-slate-200 dark:border-white/10 shadow-lg">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
@@ -1251,7 +1349,7 @@
                   Request a Free Website / SEO Audit or Start Your Project
                 </h2>
                 <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300" data-i18n="contactSub">
-                  Fill in your details below and send directly to my WhatsApp or Email in one click.
+                  Just fill in the form below — your message comes straight to my WhatsApp or email, and I reply myself.
                 </p>
               </div>
 
@@ -1397,17 +1495,17 @@
         heroBadge: 'Website Development • Local SEO • Google Business Profile',
         heroTitlePart1: 'Websites That Impress.',
         heroTitlePart2: 'SEO That Gets You Found First.',
-        heroSubtitle: 'I build fast, high-converting websites and rank businesses at #1 on Google Maps, Local Search, and Google AI Overviews across Dubai, Saudi Arabia, Pakistan, and global markets.',
+        heroSubtitle: 'I build fast websites for local businesses and get them found first — at the top of Google Maps, in local search, and inside Google AI Overviews. Most of my work is for clients in Dubai, Saudi Arabia and Pakistan, and I take on projects worldwide.',
         heroPrimaryCta: 'Get a Free Website / SEO Audit →',
         heroSecondaryCta: 'See Verified Map & GA4 Proof',
         heroStat1: 'Key Events Growth (RuSpa)',
         heroStat2: 'Dubai Map Grid Sweeps',
         heroStat3: 'Google AI Overview & ChatGPT',
-        heroStat4: 'Projects Delivered (4+ Yrs)',
+        heroStat4: 'Projects Delivered (4+ Yrs)',
         portraitCaption: 'Web Developer & Local SEO Specialist',
         portEyebrow: 'VERIFIED CLIENT WORK',
         portTitle: 'Featured Client Portfolio',
-        portSubtitle: 'Showing 4 featured client projects below — click "Load More Projects" to explore all 15 verified client websites and SEO campaigns.',
+        portSubtitle: 'Real client websites, built and ranked by me — four are shown first, and "Load More Projects" reveals all 15.',
         portTabAll: 'All Client Sites (15)',
         portTabMap: '#1 Map Pack & AI Winners',
         portTabUae: 'Dubai & UAE (13)',
@@ -1424,7 +1522,7 @@
         clickToZoomHint: 'Click any project for full report details',
         servEyebrow: 'WHAT I DO BEST',
         servTitle: 'How We Can Work Together',
-        servSubtitle: 'Every service is backed by real live client proof and connected directly to measurable enquiries.',
+        servSubtitle: 'These are the services I personally deliver — and each one is tied to a real client result you can check right here on this page.',
         btnViewAllServices: 'View Full 10-Service Checklist →',
         featuredProofPrefix: 'Verified Proof:',
         aboutEyebrow: 'THE PERSON BEHIND THE RESULTS',
@@ -1441,7 +1539,7 @@
         readMoreBtn: 'Read Full Guide →',
         contactEyebrow: 'READY TO GROW?',
         contactTitle: 'Request a Free Website / SEO Audit or Start Your Project',
-        contactSub: 'Fill in your details below and send directly to my WhatsApp or Email in one click.',
+        contactSub: 'Just fill in the form below — your message comes straight to my WhatsApp or email, and I reply myself.',
         phName: 'Your Name *',
         phEmail: 'Your Email *',
         phUrl: 'Website URL (optional)',
@@ -2067,6 +2165,7 @@
     const BLOG_POSTS = [
       {
         slug: 'how-to-sweep-google-maps-from-20-to-1',
+        thumb: '/assets/images/oleh_ruspa_map.jpg',
         category: 'Local Map Pack',
         readTime: '6 min read',
         keywords: ['google map pack #1', 'local seo dubai', 'gbp grid tracking'],
@@ -2091,6 +2190,7 @@
       },
       {
         slug: 'how-to-get-cited-in-google-ai-overview-and-chatgpt',
+        thumb: '/assets/images/oleh_european_aio.jpg',
         category: 'AI Search (GEO)',
         readTime: '5 min read',
         keywords: ['google ai overview seo', 'chatgpt citations', 'generative engine optimization'],
@@ -2113,6 +2213,7 @@
       },
       {
         slug: 'commercial-workshop-local-seo-al-quoz-dubai',
+        thumb: '/assets/images/adas_after.jpg',
         category: 'Commercial SEO',
         readTime: '5 min read',
         keywords: ['automotive seo dubai', 'adas programming near me', 'al quoz local seo'],
@@ -2133,6 +2234,7 @@
       },
       {
         slug: 'quality-over-quantity-seasonal-seo-conversions',
+        thumb: '/assets/images/oleh_eurospa_ga4.jpg',
         category: 'GA4 & CRO',
         readTime: '6 min read',
         keywords: ['ga4 key event rate', 'conversion rate optimization', 'engaged sessions seo'],
@@ -2173,6 +2275,7 @@
       },
       {
         slug: 'catching-your-own-catchment-local-seo',
+        thumb: '/assets/images/oleh_palm_map.jpg',
         category: 'Local SEO',
         readTime: '5 min read',
         keywords: ['palm jumeirah seo', 'oud metha local seo', 'catchment area ranking'],
@@ -2348,6 +2451,7 @@
         return `
           <article style="animation-delay: ${delayMs}ms; --wave-delay: ${waveDelayMs}ms;" class="vip-card object-load-anim rounded-3xl bg-white dark:bg-navyCard border border-slate-200 dark:border-white/10 p-6 flex flex-col justify-between gap-4 shadow-sm">
             <div class="space-y-3">
+              ${post.thumb ? `<img src="${post.thumb}" alt="${post.category} guide — raffayrohan.com" loading="lazy" decoding="async" class="w-full h-40 object-cover rounded-2xl border border-slate-200 dark:border-white/10" />` : ''}
               <div class="flex items-center justify-between text-xs">
                 <span class="px-3 py-1 rounded-full bg-royal/10 dark:bg-skyAccent/15 text-royal dark:text-skyAccent font-bold">${post.category}</span>
                 <span class="text-slate-400 font-mono">${post.readTime}</span>
@@ -2607,6 +2711,19 @@
       setLanguage('ar');
       wireCardSpotlights();
 
+      // Route landing: /about, /services, /portfolio, /blog and /contact are
+      // full-page copies of this homepage — scroll straight to the matching
+      // section on load so the route feels like its own page.
+      (function() {
+        if (window.location.hash) return;
+        const routeMap = { '/about': 'about', '/services': 'services', '/portfolio': 'portfolio', '/blog': 'blog', '/contact': 'contact' };
+        const routePath = window.location.pathname.replace(/\/+$/, '');
+        const routeTargetId = routeMap[routePath];
+        if (!routeTargetId) return;
+        const routeTargetEl = document.getElementById(routeTargetId);
+        if (routeTargetEl) setTimeout(function() { routeTargetEl.scrollIntoView(); }, 400);
+      })();
+
       // Load More Projects Button (4 -> +4 -> All 15 -> Reset to 4)
       const loadMoreBtn = document.getElementById('btn-load-more-projects');
       if (loadMoreBtn) {
@@ -2632,6 +2749,10 @@
         mobBtn.addEventListener('click', function() {
           mobDrawer.classList.toggle('hidden');
         });
+        // Close the drawer on scroll so it never stays open over the hero/content
+        window.addEventListener('scroll', function() {
+          if (!mobDrawer.classList.contains('hidden')) mobDrawer.classList.add('hidden');
+        }, { passive: true });
       }
 
       const closeBtn = document.getElementById('clean-modal-close');
