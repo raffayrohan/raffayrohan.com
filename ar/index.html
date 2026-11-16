@@ -211,46 +211,6 @@
     }
 
     /* =================================================================== */
-    /* GPU-COMPOSITED MAGNETIC CURSOR — ACTIVE ON DESKTOP & MOBILE TOUCH!  */
-    /* =================================================================== */
-    #cursor-dot, #cursor-ring {
-      pointer-events: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 9998;
-      border-radius: 9999px;
-      transform: translate3d(-100px, -100px, 0) translate(-50%, -50%);
-      will-change: transform;
-      display: block;
-      opacity: 0.92;
-      transition: opacity 0.25s ease, width 0.2s ease, height 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
-    }
-    #cursor-dot {
-      width: 8px;
-      height: 8px;
-      background: #38BDF8;
-      box-shadow: 0 0 12px #0EA5E9, 0 0 20px #10B981;
-    }
-    #cursor-ring {
-      width: 36px;
-      height: 36px;
-      border: 1.5px solid rgba(56, 189, 248, 0.65);
-      background: radial-gradient(circle, rgba(14, 165, 233, 0.14) 0%, transparent 70%);
-    }
-    body.cursor-hover-active #cursor-dot {
-      width: 12px;
-      height: 12px;
-      background: #10B981;
-    }
-    body.cursor-hover-active #cursor-ring {
-      width: 54px;
-      height: 54px;
-      border-color: rgba(16, 185, 129, 0.85);
-      background: radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, transparent 70%);
-    }
-
-    /* =================================================================== */
     /* VIP CARD WITH FLAG-IN-THE-WIND WAVE + DESKTOP & MOBILE HOVER GLOW   */
     /* =================================================================== */
     .vip-card {
@@ -597,12 +557,29 @@ html[data-page="contact"] section#blog { display: none !important; }
 }
 .open-project-modal{white-space:normal !important; line-height:1.35}
 </style>
+
+<style id="vip-smooth">
+/* Smoothness pass: no infinite wave, no scroll shine, gentle pro scrolling */
+html{scroll-behavior:smooth; scroll-padding-top:96px}
+.vip-card{animation:none !important; will-change:auto !important; transition:transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease, border-color .35s ease !important}
+.vip-card.object-load-anim{animation:objectLoadSpring .6s cubic-bezier(.22,1,.36,1) both !important}
+.vip-card::after{display:none !important}
+.vip-card::before{background:radial-gradient(420px circle at 50% 0%, rgba(56,189,248,.10), rgba(16,185,129,.05) 45%, transparent 70%) !important}
+.vip-card.mobile-card-active{transform:none !important}
+.vip-card.mobile-card-active::before{opacity:0 !important}
+@media (hover:hover) and (pointer:fine){ .vip-card:hover{transform:translateY(-4px)} }
+header{-webkit-backdrop-filter:blur(12px) saturate(1.5) !important; backdrop-filter:blur(12px) saturate(1.5) !important}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important}
+  html{scroll-behavior:auto}
+}
+</style>
 </head>
 <body class="bg-slate-50 dark:bg-navyDeep text-slate-900 dark:text-slate-100 min-h-screen flex flex-col selection:bg-skyAccent/25 pt-20 pb-16 md:pb-0">
 
   <!-- Custom Magnetic Cursor (Active on Desktop Mouse & Mobile Touch!) -->
-  <div id="cursor-dot" aria-hidden="true"></div>
-  <div id="cursor-ring" aria-hidden="true"></div>
+  
+  
 
   <!-- ===================================================================== -->
   <!-- 100% FIXED STICKY VIP HEADER + ACCURATE BOTTOM SCROLL LOADING LINE    -->
@@ -2401,7 +2378,7 @@ html[data-page="contact"] section#blog { display: none !important; }
               </div>
 
               <a href="${item.url}" ${isAnchor ? '' : 'target="_blank" rel="noopener noreferrer"'} class="block relative min-h-[180px] p-6 bg-gradient-to-br ${item.themeGrad} flex flex-col justify-between">
-                ${['ruspa', 'status67', 'europeanspa', 'alrayyan'].includes(item.id) ? `<img data-shot="${item.id}" alt="${item.domain} website homepage" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover" style="opacity:0;transition:opacity .6s" onerror="this.remove()"><span class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/35 to-slate-900/10 pointer-events-none"></span>` : ''}
+                ${['ruspa', 'status67', 'europeanspa', 'alrayyan', 'dribrar', 'ukrainespa', 'kspa', 'elisspa', 'palmspa', 'adelspa', 'luxuryspa', 'westbayspa'].includes(item.id) ? `<img data-shot="${item.id}" alt="${item.domain} website homepage" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover" style="opacity:0;transition:opacity .6s" onerror="this.remove()"><span class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/35 to-slate-900/10 pointer-events-none"></span>` : ''}
                 <div class="relative space-y-2">
                   <div class="font-display font-extrabold text-xl text-white leading-snug">
                     ${loc.previewTitle}
@@ -2654,66 +2631,7 @@ html[data-page="contact"] section#blog { display: none !important; }
         });
       }
 
-      // 3. GPU-Composited Magnetic Cursor Follower (Idle-Sleeping for <40ms INP on Desktop & Mobile!)
-      const cursorDot = document.getElementById('cursor-dot');
-      const cursorRing = document.getElementById('cursor-ring');
-      let pointerX = window.innerWidth / 2;
-      let pointerY = window.innerHeight / 3;
-      let ringX = pointerX;
-      let ringY = pointerY;
-      let ringAnimating = false;
-
-      function animateRing() {
-        ringX += (pointerX - ringX) * 0.24;
-        ringY += (pointerY - ringY) * 0.24;
-        if (cursorRing) {
-          cursorRing.style.transform = `translate3d(${ringX.toFixed(1)}px, ${ringY.toFixed(1)}px, 0) translate(-50%, -50%)`;
-        }
-        if (Math.hypot(pointerX - ringX, pointerY - ringY) > 0.35) {
-          requestAnimationFrame(animateRing);
-        } else {
-          ringAnimating = false;
-        }
-      }
-
-      function movePointer(x, y, targetEl) {
-        pointerX = x;
-        pointerY = y;
-        if (cursorDot) {
-          cursorDot.style.transform = `translate3d(${pointerX.toFixed(1)}px, ${pointerY.toFixed(1)}px, 0) translate(-50%, -50%)`;
-          cursorDot.style.opacity = '0.95';
-        }
-        if (cursorRing) {
-          cursorRing.style.opacity = '0.95';
-        }
-        if (!ringAnimating) {
-          ringAnimating = true;
-          requestAnimationFrame(animateRing);
-        }
-        const hovered = targetEl instanceof Element && targetEl.closest('a, button, input, select, textarea, .vip-card');
-        if (hovered) document.body.classList.add('cursor-hover-active');
-        else document.body.classList.remove('cursor-hover-active');
-      }
-
-      window.addEventListener('mousemove', function(e) {
-        movePointer(e.clientX, e.clientY, e.target);
-      }, { passive: true });
-
-      window.addEventListener('touchstart', function(e) {
-        if (e.touches && e.touches.length > 0) {
-          const t = e.touches[0];
-          movePointer(t.clientX, t.clientY, e.target);
-        }
-      }, { passive: true });
-
-      window.addEventListener('touchmove', function(e) {
-        if (e.touches && e.touches.length > 0) {
-          const t = e.touches[0];
-          movePointer(t.clientX, t.clientY, e.target);
-        }
-      }, { passive: true });
-
-      // 4. Click & Touch Ripple Wave
+// 4. Click & Touch Ripple Wave
       window.addEventListener('click', function(e) {
         const ripple = document.createElement('span');
         ripple.className = 'click-ripple';
